@@ -105,8 +105,8 @@ resource "kubernetes_deployment" "this" {
           config_map {
             name = kubernetes_config_map.this.metadata.0.name
             items {
-              key  = "azure.yaml.tmpl"
-              path = "azure.yaml.tmpl"
+              key  = "azure.yml.tmpl"
+              path = "azure.yml.tmpl"
             }
           }
         }
@@ -307,7 +307,7 @@ resource "kubernetes_config_map" "this" {
   data = {
     "configuration.yaml" = local.configuration_yaml
     "azure.toml"         = local.confd_configuration
-    "azure.yaml.tmpl"    = local.confd_template
+    "azure.yml.tmpl"     = local.confd_template
   }
 }
 
