@@ -93,7 +93,7 @@ resource "kubernetes_deployment" "this" {
 
         volume {
           name = "confd-templates"
-          config_map = {
+          config_map {
             name = kubernetes_configmap.this.metadata.0.name
             item = {
               key  = "azure.yaml.tmpl"
@@ -104,7 +104,7 @@ resource "kubernetes_deployment" "this" {
 
         volume {
           name = "confd-config"
-          config_map = {
+          config_map {
             name = kubernetes_configmap.this.metadata.0.name
             item = {
               key  = "azure.toml"
@@ -115,7 +115,7 @@ resource "kubernetes_deployment" "this" {
 
         volume {
           name = "confd-sources"
-          config_map = {
+          config_map {
             name = kubernetes_configmap.this.metadata.0.name
             item = {
               key  = "configuration.yaml"
