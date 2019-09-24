@@ -307,7 +307,7 @@ resource "kubernetes_config_map" "this" {
   data = {
     "configuration.yaml" = local.configuration_yaml
     "azure.toml"         = local.confd_configuration
-    "azure.yml.tmpl"     = local.confd_template
+    "azure.yaml.tmpl"    = local.confd_template
   }
 }
 
