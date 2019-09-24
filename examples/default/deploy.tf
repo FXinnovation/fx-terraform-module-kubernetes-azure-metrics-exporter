@@ -41,7 +41,7 @@ resource "kubernetes_namespace" "this" {
 module "azure-metrics-exporter" {
   source = "../.."
 
-  namespace       = kubernetes_namespace.metadata.0.name
+  namespace       = kubernetes_namespace.this.metadata.0.name
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
