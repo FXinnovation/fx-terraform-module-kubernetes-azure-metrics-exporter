@@ -5,7 +5,7 @@ variable "configuration" {
 
 variable "deployment_name" {
   description = "Name of the deployment that will be create, if left empty, will default to 'azure-metrics-exporter'"
-  default     = ""
+  default     = "azure-metrics-exporter"
 }
 
 variable "namespace" {
