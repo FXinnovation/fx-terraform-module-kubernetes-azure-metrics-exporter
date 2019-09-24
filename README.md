@@ -20,6 +20,7 @@ Terraform module to deploy azure-metrics-exporter on kubernetes.
 | image\_pull\_policy | Image pull policy on the main container. | string | `"IfNotPresent"` | no |
 | labels | Additionnal labels that will be merged on all resources. | map | `{}` | no |
 | namespace | Namespace in which the module will be deployed. | string | `"default"` | no |
+| port | Port to be used for the service. | string | `"80"` | no |
 | replicas | Number of replicas to deploy. | string | `"1"` | no |
 | secret\_annotations | Additionnal annotations that will be merged for the secret. | map | `{}` | no |
 | secret\_labels | Additionnal labels that will be merged for the secret. | map | `{}` | no |
@@ -27,7 +28,6 @@ Terraform module to deploy azure-metrics-exporter on kubernetes.
 | service\_annotations | Additionnal annotations that will be merged for the service. | map | `{}` | no |
 | service\_labels | Additionnal labels that will be merged for the service. | map | `{}` | no |
 | service\_name | Name of the service that will be create | string | `"azure-metrics-exporter"` | no |
-| service\_port | Port to be used for the service. | string | `"80"` | no |
 | subscription\_id | Subscription ID that will be used by the azure-metrics-exporter. | string | n/a | yes |
 | tenant\_id | Tenant ID that will be used by the azure-metrics-exporter. | string | n/a | yes |
 

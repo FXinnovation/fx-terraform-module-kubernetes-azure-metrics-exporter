@@ -58,7 +58,7 @@ variable "service_labels" {
   default     = {}
 }
 
-variable "service_port" {
+variable "port" {
   description = "Port to be used for the service."
   default     = 80
 }
