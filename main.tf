@@ -64,7 +64,9 @@ resource "kubernetes_deployment" "this" {
   spec {
     replicas = var.replicas
     selector {
-      app = random_string.selector.result
+      match_labels = {
+        app = random_string.selector.result
+      }
     }
     template {
       metadata {
@@ -80,6 +82,7 @@ resource "kubernetes_deployment" "this" {
             "app.kubernetes.io/component"  = "exporter"
             "app.kubernetes.io/part-of"    = "monitoring"
             "app.kubernetes.io/managed-by" = "terraform"
+            app                            = random_string.selector.result
           },
           var.labels,
           var.deployment_labels
@@ -256,7 +259,7 @@ resource "kubernetes_service" "this" {
   }
 
   spec {
-    selector {
+    selector = {
       app = random_string.selector.result
     }
     type = "ClusterIP"
