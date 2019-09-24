@@ -32,10 +32,16 @@ provider "kubernetes" {
   load_config_file       = false
 }
 
+resource "kubernetes_namespace" "this" {
+  metadata {
+    name = random_string.this.result
+  }
+}
+
 module "azure-metrics-exporter" {
   source = "../.."
 
-  namespace       = random_string.this.result
+  namespace       = kubernetes_namespace.metadata.0.name
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
