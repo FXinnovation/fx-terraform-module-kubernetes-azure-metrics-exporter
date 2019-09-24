@@ -3,16 +3,17 @@
 #####
 
 locals {
-  default_configuration = {
-    configuration = {
-      active_directory_authority_url = var.active_directory_authority_url
-      resource_manager_url           = var.resource_manager_url
-      targets                        = var.targets
-      resource_groups                = var.resource_groups
-      resource_tags                  = var.resource_tags
-    }
+  configuration_key = {
+    active_directory_authority_url = var.active_directory_authority_url
+    resource_manager_url           = var.resource_manager_url
+    targets                        = var.targets
+    resource_groups                = var.resource_groups
+    resource_tags                  = var.resource_tags
   }
-  configuration_yaml  = yamlencode(local.default_configuration)
+  configuration = {
+    configuration = yamlencode(local.configuration_key)
+  }
+  configuration_yaml  = yamlencode(local.configuration)
   confd_configuration = <<EOH
 [template]
 src = "azure.yml.tmpl"
