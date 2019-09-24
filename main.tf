@@ -63,7 +63,7 @@ resource "kubernetes_deployment" "this" {
 
   spec {
     replicas = var.replicas
-    selector = {
+    selector {
       app = random_string.selector.result
     }
     template {
@@ -256,7 +256,7 @@ resource "kubernetes_service" "this" {
   }
 
   spec {
-    selector = {
+    selector {
       app = random_string.selector.result
     }
     type = "ClusterIP"
