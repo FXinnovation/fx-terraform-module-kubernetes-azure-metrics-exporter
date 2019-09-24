@@ -1,21 +1,26 @@
 variable "targets" {
-  default = []
+  default     = []
+  description = "List of maps of the target part of azure-metrics-exporter's configuration."
 }
 
 variable "resource_groups" {
-  default = []
+  default     = []
+  description = "List of maps of the resource_group part of azure-metrics-exporter's configuration."
 }
 
 variable "resource_tags" {
-  default = []
+  default     = []
+  description = "List of maps of the resource_tags part of azure-metrics-exporter's configuration."
 }
 
 variable "active_directory_authority_url" {
-  default = "https://login.microsoftonline.com/"
+  default     = "https://login.microsoftonline.com/"
+  description = "Active Directory authority URL used by azure-metrcis-exporter."
 }
 
 variable "resource_manager_url" {
-  default = "https://management.azure.com/"
+  description = "Resource manager URL used by azure-metrcis-exporter."
+  default     = "https://management.azure.com/"
 }
 
 variable "deployment_name" {
