@@ -156,7 +156,7 @@ resource "kubernetes_deployment" "this" {
           env {
             name = "subscription_id"
             value_from {
-              secret_key_ref = {
+              secret_key_ref {
                 name = kubernetes_secret.this.metadata.0.name
                 key  = "subscription_id"
               }
@@ -166,7 +166,7 @@ resource "kubernetes_deployment" "this" {
           env {
             name = "client_id"
             value_from {
-              secret_key_ref = {
+              secret_key_ref {
                 name = kubernetes_secret.this.metadata.0.name
                 key  = "client_id"
               }
@@ -176,7 +176,7 @@ resource "kubernetes_deployment" "this" {
           env {
             name = "tenant_id"
             value_from {
-              secret_key_ref = {
+              secret_key_ref {
                 name = kubernetes_secret.this.metadata.0.name
                 key  = "tenant_id"
               }
@@ -186,7 +186,7 @@ resource "kubernetes_deployment" "this" {
           env {
             name = "client_secret"
             value_from {
-              secret_key_ref = {
+              secret_key_ref {
                 name = kubernetes_secret.this.metadata.0.name
                 key  = "client_secret"
               }
