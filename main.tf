@@ -87,15 +87,15 @@ resource "kubernetes_deployment" "this" {
       }
       spec {
         volume {
-          name      = "config-volume"
-          empty_dir = {}
+          name = "config-volume"
+          empty_dir {}
         }
 
         volume {
           name = "confd-templates"
           config_map {
             name = kubernetes_config_map.this.metadata.0.name
-            item = {
+            item {
               key  = "azure.yaml.tmpl"
               path = "azure.yaml.tmpl"
             }
@@ -106,7 +106,7 @@ resource "kubernetes_deployment" "this" {
           name = "confd-config"
           config_map {
             name = kubernetes_config_map.this.metadata.0.name
-            item = {
+            item {
               key  = "azure.toml"
               path = "azure.toml"
             }
@@ -117,7 +117,7 @@ resource "kubernetes_deployment" "this" {
           name = "confd-sources"
           config_map {
             name = kubernetes_config_map.this.metadata.0.name
-            item = {
+            item {
               key  = "configuration.yaml"
               path = "configuration.yaml"
             }
