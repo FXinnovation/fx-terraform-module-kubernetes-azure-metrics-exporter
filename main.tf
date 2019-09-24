@@ -4,7 +4,10 @@
 
 locals {
   default_configuration = {
-    configuration = {}
+    configuration = {
+      active_directory_authority_url = "https://login.microsoftonline.com/"
+      resource_manager_url : "https://management.azure.com/"
+    }
   }
   configuration       = yamlencode(merge(local.default_configuration, var.configuration))
   confd_configuration = <<EOH
