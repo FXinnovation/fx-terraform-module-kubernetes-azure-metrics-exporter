@@ -273,7 +273,7 @@ resource "kubernetes_service" "this" {
 # ConfigMap
 #####
 
-resource "kubernetes_config_map" {
+resource "kubernetes_config_map" "this" {
   metadata {
     name      = var.config_map_name
     namespace = var.namespace
