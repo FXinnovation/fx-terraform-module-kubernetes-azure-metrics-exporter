@@ -1,6 +1,21 @@
-variable "configuration" {
-  description = "Map representing the configuration of the azure-metrics-exporter."
-  default     = { configuration = {} }
+variable "targets" {
+  default = []
+}
+
+variable "resource_groups" {
+  default = []
+}
+
+variable "resource_tags" {
+  default = []
+}
+
+variable "active_directory_authority_url" {
+  default = "https://login.microsoftonline.com/"
+}
+
+variable "resource_manager_url" {
+  default = "https://management.azure.com/"
 }
 
 variable "deployment_name" {

@@ -5,11 +5,14 @@
 locals {
   default_configuration = {
     configuration = {
-      active_directory_authority_url = "https://login.microsoftonline.com/"
-      resource_manager_url : "https://management.azure.com/"
+      active_directory_authority_url = var.active_directory_authority_url
+      resource_manager_url           = var.resource_manager_url
+      targets                        = var.targets
+      resource_groups                = var.resource_groups
+      resource_tags                  = var.resource_tags
     }
   }
-  configuration       = yamlencode(merge(local.default_configuration, var.configuration))
+  configuration_yaml  = yamlencode(local.default_configuration)
   confd_configuration = <<EOH
 [template]
 src = "azure.yml.tmpl"
@@ -302,7 +305,7 @@ resource "kubernetes_config_map" "this" {
   }
 
   data = {
-    "configuration.yaml" = local.configuration
+    "configuration.yaml" = local.configuration_yaml
     "azure.toml"         = local.confd_configuration
     "azure.yml.tmpl"     = local.confd_template
   }

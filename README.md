@@ -7,13 +7,13 @@ Terraform module to deploy azure-metrics-exporter on kubernetes.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| active\_directory\_authority\_url |  | string | `"https://login.microsoftonline.com/"` | no |
 | annotations | Additionnal annotations that will be merged on all resources. | map | `{}` | no |
 | client\_id | Client ID that will be used by the azure-metrics-exporter. | string | n/a | yes |
 | client\_secret | Client secret that will be used by the azure-metrics-exporter. | string | n/a | yes |
 | config\_map\_annotations | Additionnal annotations that will be merged for the config map. | map | `{}` | no |
 | config\_map\_labels | Additionnal labels that will be merged for the config map. | map | `{}` | no |
 | config\_map\_name | Name of the config map that will be created. | string | `"azure-metrics-exporter"` | no |
-| configuration | Map representing the configuration of the azure-metrics-exporter. | map | `{ "configuration": [ {} ] }` | no |
 | deployment\_annotations | Additionnal annotations that will be merged on the deployment. | map | `{}` | no |
 | deployment\_labels | Additionnal labels that will be merged on the deployment. | map | `{}` | no |
 | deployment\_name | Name of the deployment that will be create, if left empty, will default to 'azure-metrics-exporter' | string | `"azure-metrics-exporter"` | no |
@@ -22,6 +22,9 @@ Terraform module to deploy azure-metrics-exporter on kubernetes.
 | namespace | Namespace in which the module will be deployed. | string | `"default"` | no |
 | port | Port to be used for the service. | string | `"80"` | no |
 | replicas | Number of replicas to deploy. | string | `"1"` | no |
+| resource\_groups |  | list | `[]` | no |
+| resource\_manager\_url |  | string | `"https://management.azure.com/"` | no |
+| resource\_tags |  | list | `[]` | no |
 | secret\_annotations | Additionnal annotations that will be merged for the secret. | map | `{}` | no |
 | secret\_labels | Additionnal labels that will be merged for the secret. | map | `{}` | no |
 | secret\_name | Name of the secret that will be created. | string | `"azure-metrics-exporter"` | no |
@@ -29,6 +32,7 @@ Terraform module to deploy azure-metrics-exporter on kubernetes.
 | service\_labels | Additionnal labels that will be merged for the service. | map | `{}` | no |
 | service\_name | Name of the service that will be create | string | `"azure-metrics-exporter"` | no |
 | subscription\_id | Subscription ID that will be used by the azure-metrics-exporter. | string | n/a | yes |
+| targets |  | list | `[]` | no |
 | tenant\_id | Tenant ID that will be used by the azure-metrics-exporter. | string | n/a | yes |
 
 ## Outputs
