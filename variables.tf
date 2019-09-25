@@ -1,3 +1,8 @@
+variable "enabled" {
+  default     = true
+  description = "Whether to enable the azure-metrics-exporter module."
+}
+
 variable "targets" {
   default     = []
   description = "List of maps of the target part of azure-metrics-exporter's configuration."

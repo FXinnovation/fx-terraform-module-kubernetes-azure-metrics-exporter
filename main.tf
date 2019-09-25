@@ -3,6 +3,7 @@
 #####
 
 locals {
+  application_version = "0.6.0"
   configuration_key = {
     active_directory_authority_url = var.active_directory_authority_url
     resource_manager_url           = var.resource_manager_url
@@ -47,6 +48,8 @@ resource "random_string" "selector" {
 #####
 
 resource "kubernetes_deployment" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.deployment_name
     namespace = var.namespace
@@ -58,7 +61,7 @@ resource "kubernetes_deployment" "this" {
       {
         "app.kubernetes.io/name"       = "azure-metrics-exporter"
         "app.kubernetes.io/instance"   = var.deployment_name
-        "app.kubernetes.io/version"    = "0.6.0"
+        "app.kubernetes.io/version"    = local.application_version
         "app.kubernetes.io/component"  = "exporter"
         "app.kubernetes.io/part-of"    = "monitoring"
         "app.kubernetes.io/managed-by" = "terraform"
@@ -85,7 +88,7 @@ resource "kubernetes_deployment" "this" {
           {
             "app.kubernetes.io/name"       = "azure-metrics-exporter"
             "app.kubernetes.io/instance"   = var.deployment_name
-            "app.kubernetes.io/version"    = "0.6.0"
+            "app.kubernetes.io/version"    = local.application_version
             "app.kubernetes.io/component"  = "exporter"
             "app.kubernetes.io/part-of"    = "monitoring"
             "app.kubernetes.io/managed-by" = "terraform"
@@ -104,7 +107,7 @@ resource "kubernetes_deployment" "this" {
         volume {
           name = "confd-templates"
           config_map {
-            name = kubernetes_config_map.this.metadata.0.name
+            name = element(concat(kubernetes_config_map.this.*.metadata.0.name, list("")), 0)
             items {
               key  = "azure.yml.tmpl"
               path = "azure.yml.tmpl"
@@ -115,7 +118,7 @@ resource "kubernetes_deployment" "this" {
         volume {
           name = "confd-config"
           config_map {
-            name = kubernetes_config_map.this.metadata.0.name
+            name = element(concat(kubernetes_config_map.this.*.metadata.0.name, list("")), 0)
             items {
               key  = "azure.toml"
               path = "azure.toml"
@@ -126,7 +129,7 @@ resource "kubernetes_deployment" "this" {
         volume {
           name = "confd-sources"
           config_map {
-            name = kubernetes_config_map.this.metadata.0.name
+            name = element(concat(kubernetes_config_map.this.*.metadata.0.name, list("")), 0)
             items {
               key  = "configuration.yaml"
               path = "configuration.yaml"
@@ -167,7 +170,7 @@ resource "kubernetes_deployment" "this" {
             name = "subscription_id"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "subscription_id"
               }
             }
@@ -177,7 +180,7 @@ resource "kubernetes_deployment" "this" {
             name = "client_id"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "client_id"
               }
             }
@@ -187,7 +190,7 @@ resource "kubernetes_deployment" "this" {
             name = "tenant_id"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "tenant_id"
               }
             }
@@ -197,7 +200,7 @@ resource "kubernetes_deployment" "this" {
             name = "client_secret"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "client_secret"
               }
             }
@@ -206,7 +209,7 @@ resource "kubernetes_deployment" "this" {
 
         container {
           name              = "azure-metrics-exporter"
-          image             = "fxinnovation/azure_metrics_exporter:0.6.0"
+          image             = "fxinnovation/azure_metrics_exporter:${local.application_version}"
           image_pull_policy = var.image_pull_policy
 
           volume_mount {
@@ -241,6 +244,8 @@ resource "kubernetes_deployment" "this" {
 #####
 
 resource "kubernetes_service" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.service_name
     namespace = var.namespace
@@ -255,7 +260,7 @@ resource "kubernetes_service" "this" {
       {
         "app.kubernetes.io/name"       = "azure-metrics-exporter"
         "app.kubernetes.io/instance"   = var.service_name
-        "app.kubernetes.io/version"    = "0.6.0"
+        "app.kubernetes.io/version"    = local.application_version
         "app.kubernetes.io/component"  = "exporter"
         "app.kubernetes.io/part-of"    = "monitoring"
         "app.kubernetes.io/managed-by" = "terraform"
@@ -284,6 +289,8 @@ resource "kubernetes_service" "this" {
 #####
 
 resource "kubernetes_config_map" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.config_map_name
     namespace = var.namespace
@@ -294,8 +301,8 @@ resource "kubernetes_config_map" "this" {
     labels = merge(
       {
         "app.kubernetes.io/name"       = "azure-metrics-exporter"
-        "app.kubernetes.io/instance"   = var.config_map_name == "" ? var.namespace : var.config_map_name
-        "app.kubernetes.io/version"    = "0.6.0"
+        "app.kubernetes.io/instance"   = var.config_map_name
+        "app.kubernetes.io/version"    = local.application_version
         "app.kubernetes.io/component"  = "exporter"
         "app.kubernetes.io/part-of"    = "monitoring"
         "app.kubernetes.io/managed-by" = "terraform"
@@ -317,6 +324,8 @@ resource "kubernetes_config_map" "this" {
 #####
 
 resource "kubernetes_secret" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.secret_name
     namespace = var.namespace
@@ -328,7 +337,7 @@ resource "kubernetes_secret" "this" {
       {
         "app.kubernetes.io/name"       = "azure-metrics-exporter"
         "app.kubernetes.io/instance"   = var.secret_name
-        "app.kubernetes.io/version"    = "0.6.0"
+        "app.kubernetes.io/version"    = local.application_version
         "app.kubernetes.io/component"  = "exporter"
         "app.kubernetes.io/part-of"    = "monitoring"
         "app.kubernetes.io/managed-by" = "terraform"
