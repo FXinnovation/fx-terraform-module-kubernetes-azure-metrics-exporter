@@ -4,6 +4,13 @@
 
 locals {
   application_version = "0.6.0"
+  labels = {
+    "app.kubernetes.io/name"       = "azure-metrics-exporter"
+    "app.kubernetes.io/component"  = "exporter"
+    "app.kubernetes.io/part-of"    = "monitoring"
+    "app.kubernetes.io/managed-by" = "terraform"
+    "app.kubernetes.io/version"    = local.application_version
+  }
   configuration_key = {
     active_directory_authority_url = var.active_directory_authority_url
     resource_manager_url           = var.resource_manager_url
@@ -59,13 +66,9 @@ resource "kubernetes_deployment" "this" {
     )
     labels = merge(
       {
-        "app.kubernetes.io/name"       = "azure-metrics-exporter"
-        "app.kubernetes.io/instance"   = var.deployment_name
-        "app.kubernetes.io/version"    = local.application_version
-        "app.kubernetes.io/component"  = "exporter"
-        "app.kubernetes.io/part-of"    = "monitoring"
-        "app.kubernetes.io/managed-by" = "terraform"
+        "app.kubernetes.io/instance" = var.deployment_name
       },
+      local.labels,
       var.labels,
       var.deployment_labels
     )
@@ -86,14 +89,10 @@ resource "kubernetes_deployment" "this" {
         )
         labels = merge(
           {
-            "app.kubernetes.io/name"       = "azure-metrics-exporter"
-            "app.kubernetes.io/instance"   = var.deployment_name
-            "app.kubernetes.io/version"    = local.application_version
-            "app.kubernetes.io/component"  = "exporter"
-            "app.kubernetes.io/part-of"    = "monitoring"
-            "app.kubernetes.io/managed-by" = "terraform"
-            app                            = random_string.selector.result
+            "app.kubernetes.io/instance" = var.deployment_name
+            app                          = random_string.selector.result
           },
+          local.labels,
           var.labels,
           var.deployment_labels
         )
@@ -258,13 +257,9 @@ resource "kubernetes_service" "this" {
     )
     labels = merge(
       {
-        "app.kubernetes.io/name"       = "azure-metrics-exporter"
-        "app.kubernetes.io/instance"   = var.service_name
-        "app.kubernetes.io/version"    = local.application_version
-        "app.kubernetes.io/component"  = "exporter"
-        "app.kubernetes.io/part-of"    = "monitoring"
-        "app.kubernetes.io/managed-by" = "terraform"
+        "app.kubernetes.io/instance" = var.service_name
       },
+      local.labels,
       var.labels,
       var.service_labels
     )
@@ -300,13 +295,9 @@ resource "kubernetes_config_map" "this" {
     )
     labels = merge(
       {
-        "app.kubernetes.io/name"       = "azure-metrics-exporter"
-        "app.kubernetes.io/instance"   = var.config_map_name
-        "app.kubernetes.io/version"    = local.application_version
-        "app.kubernetes.io/component"  = "exporter"
-        "app.kubernetes.io/part-of"    = "monitoring"
-        "app.kubernetes.io/managed-by" = "terraform"
+        "app.kubernetes.io/instance" = var.config_map_name
       },
+      local.labels,
       var.labels,
       var.config_map_labels
     )
@@ -335,13 +326,9 @@ resource "kubernetes_secret" "this" {
     )
     labels = merge(
       {
-        "app.kubernetes.io/name"       = "azure-metrics-exporter"
-        "app.kubernetes.io/instance"   = var.secret_name
-        "app.kubernetes.io/version"    = local.application_version
-        "app.kubernetes.io/component"  = "exporter"
-        "app.kubernetes.io/part-of"    = "monitoring"
-        "app.kubernetes.io/managed-by" = "terraform"
+        "app.kubernetes.io/instance" = var.secret_name
       },
+      local.labels,
       var.labels,
       var.secret_labels
     )
