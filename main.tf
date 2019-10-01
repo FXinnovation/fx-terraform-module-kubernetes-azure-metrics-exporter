@@ -90,6 +90,7 @@ resource "kubernetes_deployment" "this" {
             "app.kubernetes.io/part-of"    = "monitoring"
             "app.kubernetes.io/managed-by" = "terraform"
             app                            = random_string.selector.result
+            "configuration/hash"           = base64sha256(local.configuration_yaml)
           },
           var.labels,
           var.deployment_labels
