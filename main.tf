@@ -292,7 +292,7 @@ resource "kubernetes_config_map" "this" {
     )
     labels = merge(
       {
-        "app.kubernetes.io/instance" = var.config_map_name == "" ? var.namespace : var.config_map_name
+        "app.kubernetes.io/instance" = var.config_map_name
       },
       local.labels,
       var.labels,
