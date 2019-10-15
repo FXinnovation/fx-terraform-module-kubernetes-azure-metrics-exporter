@@ -17,6 +17,7 @@ Terraform module to deploy azure-metrics-exporter on kubernetes.
 | deployment\_annotations | Additionnal annotations that will be merged on the deployment. | map | `{}` | no |
 | deployment\_labels | Additionnal labels that will be merged on the deployment. | map | `{}` | no |
 | deployment\_name | Name of the deployment that will be create, if left empty, will default to 'azure-metrics-exporter' | string | `"azure-metrics-exporter"` | no |
+| enabled | Whether or not to enable this module. | string | `"true"` | no |
 | image\_pull\_policy | Image pull policy on the main container. | string | `"IfNotPresent"` | no |
 | labels | Additionnal labels that will be merged on all resources. | map | `{}` | no |
 | namespace | Namespace in which the module will be deployed. | string | `"default"` | no |

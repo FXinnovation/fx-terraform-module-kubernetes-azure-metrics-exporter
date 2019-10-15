@@ -132,3 +132,8 @@ variable "subscription_id" {
   description = "Subscription ID that will be used by the azure-metrics-exporter."
   type        = string
 }
+
+variable "enabled" {
+  description = "Whether or not to enable this module."
+  default     = true
+}

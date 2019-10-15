@@ -44,6 +44,8 @@ EOT
 #####
 
 resource "random_string" "selector" {
+  count = var.enabled ? 1 : 0
+
   special = false
   upper   = false
   number  = false
@@ -55,6 +57,8 @@ resource "random_string" "selector" {
 #####
 
 resource "kubernetes_deployment" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.deployment_name
     namespace = var.namespace
@@ -76,7 +80,7 @@ resource "kubernetes_deployment" "this" {
     replicas = var.replicas
     selector {
       match_labels = {
-        app = random_string.selector.result
+        app = element(concat(random_string.selector.*.result, list("")), 0)
       }
     }
     template {
@@ -84,6 +88,7 @@ resource "kubernetes_deployment" "this" {
         annotations = merge(
           {
             "configuration/hash" = sha256(local.configuration_yaml)
+            "secret/hash"        = sha256("${var.client_id}${var.client_secret}${var.tenant_id}${var.subscription_id}")
           },
           var.annotations,
           var.deployment_annotations
@@ -91,7 +96,7 @@ resource "kubernetes_deployment" "this" {
         labels = merge(
           {
             "app.kubernetes.io/instance" = var.deployment_name
-            app                          = random_string.selector.result
+            app                          = element(concat(random_string.selector.*.result, list("")), 0)
           },
           local.labels,
           var.labels,
@@ -107,7 +112,7 @@ resource "kubernetes_deployment" "this" {
         volume {
           name = "confd-templates"
           config_map {
-            name = kubernetes_config_map.this.metadata.0.name
+            name = element(concat(kubernetes_config_map.this.*.metadata.0.name, list("")), 0)
             items {
               key  = "azure.yml.tmpl"
               path = "azure.yml.tmpl"
@@ -118,7 +123,7 @@ resource "kubernetes_deployment" "this" {
         volume {
           name = "confd-config"
           config_map {
-            name = kubernetes_config_map.this.metadata.0.name
+            name = element(concat(kubernetes_config_map.this.*.metadata.0.name, list("")), 0)
             items {
               key  = "azure.toml"
               path = "azure.toml"
@@ -129,7 +134,7 @@ resource "kubernetes_deployment" "this" {
         volume {
           name = "confd-sources"
           config_map {
-            name = kubernetes_config_map.this.metadata.0.name
+            name = element(concat(kubernetes_config_map.this.*.metadata.0.name, list("")), 0)
             items {
               key  = "configuration.yaml"
               path = "configuration.yaml"
@@ -170,7 +175,7 @@ resource "kubernetes_deployment" "this" {
             name = "subscription_id"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "subscription_id"
               }
             }
@@ -180,7 +185,7 @@ resource "kubernetes_deployment" "this" {
             name = "client_id"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "client_id"
               }
             }
@@ -190,7 +195,7 @@ resource "kubernetes_deployment" "this" {
             name = "tenant_id"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "tenant_id"
               }
             }
@@ -200,7 +205,7 @@ resource "kubernetes_deployment" "this" {
             name = "client_secret"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.this.metadata.0.name
+                name = element(concat(kubernetes_secret.this.*.metadata.0.name, list("")), 0)
                 key  = "client_secret"
               }
             }
@@ -244,6 +249,8 @@ resource "kubernetes_deployment" "this" {
 #####
 
 resource "kubernetes_service" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.service_name
     namespace = var.namespace
@@ -266,7 +273,7 @@ resource "kubernetes_service" "this" {
 
   spec {
     selector = {
-      app = random_string.selector.result
+      app = element(concat(random_string.selector.*.result, list("")), 0)
     }
     type = "ClusterIP"
     port {
@@ -283,6 +290,8 @@ resource "kubernetes_service" "this" {
 #####
 
 resource "kubernetes_config_map" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.config_map_name
     namespace = var.namespace
@@ -312,6 +321,8 @@ resource "kubernetes_config_map" "this" {
 #####
 
 resource "kubernetes_secret" "this" {
+  count = var.enabled ? 1 : 0
+
   metadata {
     name      = var.secret_name
     namespace = var.namespace
