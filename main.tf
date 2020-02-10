@@ -3,7 +3,7 @@
 #####
 
 locals {
-  application_version = "0.10.0"
+  application_version = "0.11.0"
   labels = {
     "app.kubernetes.io/version"    = local.application_version
     "app.kubernetes.io/component"  = "exporter"
